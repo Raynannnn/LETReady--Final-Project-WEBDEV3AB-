@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In</title>
+
+<style>
+    body{
+        margin:0;
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background:linear-gradient(135deg,#dceaff,#6cb2ff,#1a5ed3);
+        font-family:Arial;
+    }
+    .box{
+        background:white;
+        padding:40px;
+        border-radius:25px;
+        width:350px;
+        border:3px solid #003065;
+        text-align:center;
+        box-shadow:0 0 20px rgba(0,0,0,0.2);
+    }
+    input{
+        width:90%;
+        padding:12px;
+        border-radius:20px;
+        border:2px solid #003065;
+        margin:12px 0;
+        text-align:center;
+    }
+    button{
+        width:90%;
+        padding:12px;
+        border-radius:20px;
+        border:2px solid #003065;
+        background:#003065;
+        font-weight:bold;
+        color:white;
+        cursor:pointer;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <h1>SIGN IN</h1>
+
+    <input id="newName" type="text" placeholder="NAME" required>
+    <input id="newPass" type="password" placeholder="PASSWORD" required>
+
+    <button onclick="registerUser()">CREATE ACCOUNT</button>
+</div>
+
+<script>
+function registerUser(){
+    let name = document.getElementById("newName").value;
+    let pass = document.getElementById("newPass").value;
+
+    if(name=="" || pass==""){ alert("Fill up all fields."); return; }
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    users.push({
+        username: name,
+        password: pass,
+        role: "student"
+    });
+
+    localStorage.setItem("users", JSON.stringify(users));
+    alert("Account Created!");
+    window.location.href="login.html";
+}
+</script>
+
+</body>
+</html>

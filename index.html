@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thesis Reviewer</title>
+
+<style>
+    body{
+        margin:0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(135deg, #b6d8ff, #5aaeff, #1c64e9);
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        overflow:hidden;
+        color:#003065;
+    }
+
+    /* DRAGGABLE CIRCLE */
+    .circle{
+        position:absolute;
+        width:260px;
+        height:260px;
+        border-radius:50%;
+        background:white;
+        border:5px solid #003065;
+        box-shadow:0 0 20px rgba(0,0,0,0.2);
+        cursor:grab;
+        user-select:none;
+        transition:0.2s;
+    }
+
+    .circle:active{
+        cursor:grabbing;
+        transform:scale(1.05);
+    }
+
+    /* LEFT & RIGHT TARGET BUTTONS */
+    .target{
+        position:absolute;
+        top:50%;
+        transform:translateY(-50%);
+        padding:15px 40px;
+        background:white;
+        border-radius:30px;
+        border:2px solid #003065;
+        font-weight:900;
+        font-size:20px;
+        color:#003065;
+    }
+
+    #loginTarget{ left:50px; }
+    #signinTarget{ right:50px; }
+
+    .description{
+        position:absolute;
+        bottom:30px;
+        background:white;
+        border:2px solid #003065;
+        padding:12px 20px;
+        border-radius:20px;
+        font-weight:bold;
+        box-shadow:0 0 12px rgba(0,0,0,0.15);
+    }
+</style>
+</head>
+<body>
+
+<div id="loginTarget" class="target">LOG IN</div>
+<div id="signinTarget" class="target">SIGN IN</div>
+
+<div id="circle" class="circle"></div>
+
+<div class="description">Drag the circle to Log In or Sign In →</div>
+
+
+<script src="script.js"></script>
+<script>
+let circle = document.getElementById("circle");
+let login = document.getElementById("loginTarget");
+let signin = document.getElementById("signinTarget");
+
+let isDragging = false;
+let offsetX, offsetY;
+
+circle.addEventListener("mousedown", (e)=>{
+    isDragging = true;
+    offsetX = e.clientX - circle.offsetLeft;
+    offsetY = e.clientY - circle.offsetTop;
+});
+
+document.addEventListener("mousemove", (e)=>{
+    if(isDragging){
+        circle.style.left = (e.clientX - offsetX) + "px";
+        circle.style.top = (e.clientY - offsetY) + "px";
+        checkCollision();
+    }
+});
+
+document.addEventListener("mouseup", ()=>{
+    isDragging = false;
+});
+
+/* CHECK IF CIRCLE TOUCHES TARGET */
+function checkCollision(){
+    let c = circle.getBoundingClientRect();
+    let l = login.getBoundingClientRect();
+    let s = signin.getBoundingClientRect();
+
+    if(intersect(c, l)){
+        window.location.href = "login.html";  // ← open login
+    }
+    if(intersect(c, s)){
+        window.location.href = "signin.html"; // ← open sign in
+    }
+}
+
+/* DETECT TOUCHING */
+function intersect(a, b){
+    return !(a.right < b.left || 
+             a.left > b.right ||
+             a.bottom < b.top ||
+             a.top > b.bottom);
+}
+</script>
+
+</body>
+</html>
+

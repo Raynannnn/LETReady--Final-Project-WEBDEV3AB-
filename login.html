@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log In</title>
+
+<style>
+    body{
+        margin:0;
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background:linear-gradient(135deg,#dceaff,#6cb2ff,#1a5ed3);
+        font-family:Arial;
+    }
+    .box{
+        background:white;
+        padding:40px;
+        width:350px;
+        border-radius:25px;
+        text-align:center;
+        border:3px solid #003065;
+        box-shadow:0 0 20px rgba(0,0,0,0.2);
+    }
+    input{
+        width:90%;
+        padding:12px;
+        border-radius:20px;
+        border:2px solid #003065;
+        margin:12px 0;
+        text-align:center;
+    }
+    button{
+        width:90%;
+        padding:12px;
+        border-radius:20px;
+        border:2px solid #003065;
+        background:#003065;
+        color:white;
+        font-weight:bold;
+        cursor:pointer;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <h1>LOG IN</h1>
+
+    <input id="username" type="text" placeholder="NAME">
+    <input id="password" type="password" placeholder="PASSWORD">
+
+    <button onclick="login()">SUBMIT</button>
+</div>
+
+<script>
+function login(){
+    let name = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+
+    if(name=="" || pass==""){
+        alert("Please complete the fields.");
+        return;
+    }
+
+    // Default admin
+    if(name==="admin" && pass==="admin123"){
+        alert("Admin Login Successful");
+        window.location.href="admin-home.html";
+        return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    let found = users.find(u => u.username===name && u.password===pass);
+
+    if(found){
+        alert("Login Successful");
+        window.location.href="student-home.html";
+    } else {
+        alert("Invalid credentials");
+    }
+}
+</script>
+
+</body>
+</html>
