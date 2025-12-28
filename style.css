@@ -1,0 +1,199 @@
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#1a3cff;
+  font-family:Poppins, Arial, sans-serif;
+  overflow:hidden;
+}
+
+/* Side indicators */
+.indicator{
+  position:fixed;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:30px;
+  font-weight:900;
+  color:white;
+  opacity:0.8;
+  letter-spacing:3px;
+}
+#loginZone{ left:40px; }
+#signupZone{ right:40px; }
+
+/* Center draggable circle */
+.circle{
+  width:210px;
+  height:210px;
+  background:white;
+  border:6px solid #0038ff;
+  border-radius:50%;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  cursor:grab;
+  box-shadow:0 0 30px rgba(255,255,255,0.3);
+  z-index:10;
+}
+
+/* Expand animation (no delay) */
+.circle.expand{
+   width: 1600px;
+  height: 1600px;
+  opacity: 0;
+  transform:translate(-50%, -50%);
+  transition: width 0.5s cubic-bezier(.17,.67,.33,1),
+              height 0.5s cubic-bezier(.17,.67,.33,1),
+              opacity 0.3s ease;
+}
+
+/* Navigation menu button */
+.menu-btn{
+  position:fixed;
+  top:20px;
+  left:20px;
+  background:white;
+  color:#1a3cff;
+  padding:12px 26px;
+  border-radius:12px;
+  font-size:18px;
+  font-weight:900;
+  cursor:pointer;
+  border:3px solid #0038ff;
+  z-index:20;
+}
+
+/* Hidden sliding menu */
+.menu{
+  position:fixed;
+  top:70px;
+  left:20px;
+  background:white;
+  padding:16px;
+  border-radius:14px;
+  box-shadow:0 4px 15px rgba(0,0,255,0.2);
+  display:none;
+  flex-direction:column;
+  gap:12px;
+  width:180px;
+  z-index:19;
+}
+.menu a{
+  text-decoration:none;
+  color:#1a3cff;
+  font-weight:700;
+  font-size:16px;
+  text-align:center;
+  padding:10px;
+  border-radius:10px;
+  border:2px solid #1a3cff;
+  transition:0.2s;
+}
+.menu a:hover{
+  background:#1a3cff;
+  color:white;
+}
+
+/* Auth panel box */
+.auth-box{
+  background:white;
+  width:340px;
+  padding:28px;
+  border-radius:18px;
+  border:3px solid #0038ff;
+  box-shadow:0 8px 20px rgba(0,0,255,0.25);
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  position:absolute;
+  z-index:3;
+}
+
+.auth-box h2{
+  margin:0;
+  font-size:26px;
+  font-weight:900;
+  color:#1a3cff;
+  text-align:center;
+}
+
+.auth-box input{
+  padding:12px;
+  border:2px solid #526af0;
+  border-radius:10px;
+  font-size:16px;
+  text-align:center;
+  outline:none;
+}
+
+.auth-box button{
+  padding:14px;
+  border:none;
+  background:#586cda;
+  color:white;
+  border-radius:10px;
+  font-size:18px;
+  font-weight:800;
+  cursor:pointer;
+  transition:0.3s;
+}
+.auth-box button:hover{
+  opacity:0.9;
+  transform:scale(1.05);
+}
+
+/* Bottom description text FIXED */
+.desc{
+  position:fixed;
+  bottom:30px;
+  width:100%;
+  text-align:center;
+  font-size:18px;
+  font-weight:700;
+  color:white;
+  opacity:0.9;
+  z-index:2;
+}
+
+/* Overlay fade */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:white;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.4s;
+  z-index:15;
+}
+.overlay.active{
+  opacity:1;
+  pointer-events:auto;
+}
+
+/* Half circle dock styles */
+.half-left{
+  left:-120px !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  width:240px;
+  height:240px;
+  border-radius:0 50% 50% 0 !important;
+}
+
+.half-right{
+  right:-120px !important;
+  left:auto !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  width:240px;
+  height:240px;
+  border-radius:50% 0 0 50% !important;
+}
+
+.overlay.active {
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}

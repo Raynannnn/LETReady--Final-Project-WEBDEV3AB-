@@ -3,25 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Log In</title>
+<title>Sign Up</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="circle half-left" id="circle"></div>
+<div class="circle half-right" id="circle"></div>
 
-<div class="auth-box" style="right:8%;">
-  <h2>LOG IN</h2>
+<div class="auth-box" style="left:8%;">
+  <h2>SIGN UP</h2>
   <input type="text" placeholder="Name">
-  <input type="password" placeholder="Password">
-  <button>Submit</button>
+  <input type="password" placeholder="Create Password">
+  <input type="password" placeholder="Confirm Password">
+  <button>Register</button>
 </div>
 
 <div class="overlay" id="overlay"></div>
 
 <script src="script.js"></script>
 <script>
-  // Keep half circle visible and return to main when swiped outside
   let c = document.getElementById("circle");
   c.style.cursor="grab";
 </script>
