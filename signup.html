@@ -12,10 +12,10 @@
 
 <div class="auth-box" style="left:8%;">
   <h2>SIGN UP</h2>
-  <input type="text" placeholder="Name">
-  <input type="password" placeholder="Create Password">
-  <input type="password" placeholder="Confirm Password">
-  <button>Register</button>
+  <input type="text" id="name" placeholder="Name">
+  <input type="password" id="pass" placeholder="Create Password">
+  <input type="password" id="confirm" placeholder="Confirm Password">
+   <button onclick="register()">Register</button>
 </div>
 
 <div class="overlay" id="overlay"></div>
@@ -46,7 +46,32 @@ document.addEventListener("mouseup", ()=>{
   if(o) o.classList.remove("active");
   setTimeout(()=> window.location.href="index.html", 350);
 });
+
+function register(){
+  let name = document.getElementById("name").value;
+  let pass = document.getElementById("pass").value;
+  let confirm = document.getElementById("confirm").value;
+
+  if(pass!==confirm){
+    alert("Password not match");
+    return;
+  }
+
+  let users = getUsers();
+  users.push({
+    name:name,
+    password:pass,
+    role:"user",
+    status:"approved"
+  });
+
+  saveUsers(users);
+  localStorage.setItem("currentUser",name);
+  window.location.href="role.html";
+}
 </script>
+
+<script src="database.js"></script>
 
 
 </body>

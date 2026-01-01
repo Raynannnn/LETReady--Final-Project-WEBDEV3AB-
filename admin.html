@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Panel</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body style="flex-direction:column; padding:40px;">
+
+<h2>ADMIN DASHBOARD</h2>
+<div id="list"></div>
+
+<script src="database.js"></script>
+<script>
+let users=getUsers();
+let box=document.getElementById("list");
+
+users.forEach((u,i)=>{
+  if(u.role==="admin" && u.status==="pending"){
+    box.innerHTML+=`
+      <p>${u.name}
+      <button onclick="approve(${i})">Approve</button>
+      </p>`;
+  }
+});
+
+function approve(i){
+  users[i].status="approved";
+  saveUsers(users);
+  alert("Admin approved");
+  location.reload();
+}
+</script>
+
+</body>
+</html>

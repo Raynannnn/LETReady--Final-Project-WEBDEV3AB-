@@ -12,13 +12,14 @@
 
 <div class="auth-box" style="right:8%;">
   <h2>LOG IN</h2>
-  <input type="text" placeholder="Name">
-  <input type="password" placeholder="Password">
-  <button>Submit</button>
+  <input type="text" id="name" placeholder="Name">
+  <input type="password" id="pass" placeholder="Password">
+ <button onclick="login()">Submit</button>
 </div>
 
 <div class="overlay" id="overlay"></div>
 
+<script src="database.js"></script>
 <script src="script.js"></script>
 <script>
 let c = document.getElementById("circle");
@@ -46,6 +47,34 @@ document.addEventListener("mouseup", ()=>{
   if(o) o.classList.remove("active");
   setTimeout(()=> window.location.href="index.html", 350);
 });
+</script>
+
+<script>
+function login(){
+  let name = document.getElementById("name").value;
+  let pass = document.getElementById("pass").value;
+
+  let users = getUsers();
+  let user = users.find(u=>u.name===name && u.password===pass);
+
+  if(!user){
+    alert("Invalid login");
+    return;
+  }
+
+  if(user.role==="admin" && user.status!=="approved"){
+    alert("Admin not approved yet");
+    return;
+  }
+
+  localStorage.setItem("currentUser", name);
+
+  if(user.role==="admin"){
+    window.location.href="admin.html";
+  }else{
+    window.location.href="index.html";
+  }
+}
 </script>
 
 </body>

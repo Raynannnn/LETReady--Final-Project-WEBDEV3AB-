@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Select Role</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body style="flex-direction:column; gap:20px;">
+
+<h2>Do you want to be an:</h2>
+
+<button onclick="setRole('user')">USER</button>
+<button onclick="setRole('organization')">ORGANIZATION</button>
+<button onclick="setRole('admin')">ADMIN</button>
+
+<script src="database.js"></script>
+<script>
+function setRole(role){
+  let current = localStorage.getItem("currentUser");
+  let users = getUsers();
+
+  users.forEach(u=>{
+    if(u.name===current){
+      u.role=role;
+      if(role==="admin"){
+        u.status="pending";
+        alert("Admin request sent");
+      }
+    }
+  });
+
+  saveUsers(users);
+  window.location.href="index.html";
+}
+</script>
+
+</body>
+</html>
