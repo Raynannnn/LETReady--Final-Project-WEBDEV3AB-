@@ -10,10 +10,43 @@
 
 <div class="menu-btn" onclick="toggleMenu()">MENU</div>
 <div class="menu" id="menu">
-  <a href="#">Details</a>
-  <a href="#">Tutorial / Help</a>
-  <a href="#">Contact</a>
+  <a onclick="openPanel('detailsPanel')">Details</a>
+  <a onclick="openPanel('tutorialPanel')">Tutorial / Help</a>
+  <a onclick="openPanel('contactPanel')">Contact</a>
 </div>
+
+<!-- INFO PANELS -->
+<div class="info-panel" id="detailsPanel">
+  <h2>DETAILS</h2>
+  <p>
+    This website is a thesis reviewer platform designed to help students
+    review concepts easily with interactive visuals and smooth navigation.
+  </p>
+  <button class="back-btn" onclick="backToMain()">BACK TO MAIN</button>
+</div>
+
+<div class="info-panel" id="tutorialPanel">
+  <h2>TUTORIAL / HELP</h2>
+  <p>
+    • Drag the circle to LOG IN or SIGN UP  
+    • Use the MENU button for navigation  
+    • Follow on-screen instructions for smooth flow
+  </p>
+  <button class="back-btn" onclick="backToMain()">BACK TO MAIN</button>
+</div>
+
+<div class="info-panel" id="contactPanel">
+  <h2>CONTACT</h2>
+  <p>
+    Email: thesisreviewer@gmail.com  
+    Facebook: Thesis Reviewer PH  
+    Support available 24/7
+  </p>
+  <button class="back-btn" onclick="backToMain()">BACK TO MAIN</button>
+</div>
+
+<!-- PARTICLES -->
+<div id="particles"></div>
 
 <div class="indicator" id="loginZone">LOG IN</div>
 <div class="indicator" id="signupZone">SIGN IN</div>

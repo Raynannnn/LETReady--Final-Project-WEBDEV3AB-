@@ -41,14 +41,8 @@ body{
 
 /* Expand animation (no delay) */
 .circle.expand{
-  width: 1700px;
-  height: 1700px;
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(1.2);
-  transition: width 0.7s cubic-bezier(.2,.8,.2,1),
-              height 0.7s cubic-bezier(.2,.8,.2,1),
-              opacity 0.4s ease,
-              transform 0.6s cubic-bezier(.2,.8,.2,1);
+  opacity:0;
+  transition: opacity 0.3s ease;
 }
 
 
@@ -198,4 +192,95 @@ body{
 .overlay.active {
   opacity: 1;
   transition: opacity 0.4s ease;
+}
+
+/* INFO PANELS */
+.info-panel{
+  position:fixed;
+  top:80px;
+  left:50%;
+  transform:translateX(-50%) scale(0.7);
+  width:70%;
+  max-width:700px;
+  background:white;
+  border:3px solid #0038ff;
+  border-radius:20px;
+  padding:30px;
+  text-align:center;
+  opacity:0;
+  pointer-events:none;
+  transition:0.4s ease;
+  z-index:18;
+  box-shadow:0 15px 40px rgba(0,0,255,0.25);
+}
+
+.info-panel.active{
+  opacity:1;
+  pointer-events:auto;
+  transform:translateX(-50%) scale(1);
+}
+
+.info-panel h2{
+  margin-top:0;
+  font-size:30px;
+  font-weight:900;
+  color:#1a3cff;
+}
+
+.info-panel p{
+  font-size:17px;
+  font-weight:600;
+  color:#333;
+  line-height:1.6;
+}
+
+/* PARTICLES */
+#particles{
+  position:fixed;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+}
+
+.particle{
+  position:absolute;
+  width:6px;
+  height:6px;
+  background:white;
+  opacity:0.6;
+  border-radius:50%;
+  animation: float 6s linear infinite;
+}
+
+@keyframes float{
+  from{ transform:translateY(100vh); }
+  to{ transform:translateY(-10vh); }
+}
+
+/* MAIN PAGE HIDE STATE */
+.main-hide .circle,
+.main-hide .indicator,
+.main-hide .desc{
+  transform:scale(0.6);
+  opacity:0;
+  transition:0.4s ease;
+  pointer-events:none;
+}
+
+/* BACK BUTTON */
+.back-btn{
+  margin-top:20px;
+  padding:12px 28px;
+  font-size:16px;
+  font-weight:800;
+  border-radius:12px;
+  border:2px solid #1a3cff;
+  background:white;
+  color:#1a3cff;
+  cursor:pointer;
+  transition:0.3s;
+}
+.back-btn:hover{
+  background:#1a3cff;
+  color:white;
 }

@@ -57,3 +57,44 @@ window.addEventListener("load", ()=>{
   circle.style.transform = "translate(-50%, -50%)";
   circle.style.opacity = 1;
 });
+
+function openPanel(id){
+  document.body.classList.add("main-hide");
+
+  document.querySelectorAll(".info-panel").forEach(p=>{
+    p.classList.remove("active");
+  });
+
+  document.getElementById(id).classList.add("active");
+  toggleMenu();
+}
+
+
+// CLICK OUTSIDE TO CLOSE
+document.addEventListener("click",(e)=>{
+  if(!e.target.closest(".info-panel") && !e.target.closest(".menu") && !e.target.closest(".menu-btn")){
+    document.querySelectorAll(".info-panel").forEach(p=>{
+      p.classList.remove("active");
+    });
+  }
+});
+
+/* PARTICLES GENERATOR */
+let particles = document.getElementById("particles");
+
+for(let i=0;i<40;i++){
+  let p = document.createElement("div");
+  p.className = "particle";
+  p.style.left = Math.random()*100+"%";
+  p.style.animationDuration = 4 + Math.random()*6 + "s";
+  p.style.opacity = Math.random();
+  particles.appendChild(p);
+}
+
+function backToMain(){
+  document.body.classList.remove("main-hide");
+
+  document.querySelectorAll(".info-panel").forEach(p=>{
+    p.classList.remove("active");
+  });
+}
