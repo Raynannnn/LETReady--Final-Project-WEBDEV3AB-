@@ -20,11 +20,34 @@
 
 <div class="overlay" id="overlay"></div>
 
-<script src="script.js"></script>
 <script>
-  let c = document.getElementById("circle");
-  c.style.cursor="grab";
+let c = document.getElementById("circle");
+let start = 0;
+let drag = false;
+
+c.addEventListener("mousedown", (e)=>{
+  start = e.clientX;
+  drag = true;
+  c.style.transition="transform 0.2s ease, opacity 0.3s ease";
+});
+
+document.addEventListener("mousemove", (e)=>{
+  if(!drag) return;
+  let d = e.clientX - start;
+  c.style.transform=`translate(${d}px, -50%) scale(${1 + Math.abs(d)/700})`;
+  c.style.opacity = 1 - Math.abs(d)/420;
+});
+
+document.addEventListener("mouseup", ()=>{
+  if(!drag) return;
+  drag = false;
+  c.classList.add("expand");
+  let o = document.getElementById("overlay");
+  if(o) o.classList.remove("active");
+  setTimeout(()=> window.location.href="index.html", 350);
+});
 </script>
+
 
 </body>
 </html>

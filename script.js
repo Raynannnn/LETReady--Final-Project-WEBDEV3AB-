@@ -11,6 +11,7 @@ let dragging = false;
 // DRAG START
 circle.addEventListener("mousedown", (e)=>{
   startX = e.clientX;
+  currentX = 0;
   dragging = true;
   circle.style.transition = "transform 0.2s ease";
 });
@@ -18,9 +19,8 @@ circle.addEventListener("mousedown", (e)=>{
 // DRAG MOVE
 document.addEventListener("mousemove", (e)=>{
   if(!dragging) return;
-  currentX = e.clientX;
-  currentX = currentX;
-  let diff = currentX - startX;
+  let diff = e.clientX - startX;
+  currentX = diff;
   circle.style.transform = `translate(calc(-50% + ${diff}px), -50%)`;
 });
 
@@ -28,46 +28,32 @@ document.addEventListener("mousemove", (e)=>{
 document.addEventListener("mouseup", ()=>{
   if(!dragging) return;
   dragging = false;
-  let diff = currentX - startX;
 
-  // EXPAND FIRST BEFORE NAVIGATION
-  if(diff < -120){
-    // swipe left → login
+  // EXPAND + NAVIGATE
+  if(currentX < -120){
     circle.classList.add("expand");
     document.getElementById("overlay").classList.add("active");
-
-    circle.addEventListener("transitionend", ()=>{
-      window.location.href = "login.html";
-    }, { once: true });
+    setTimeout(()=> window.location.href="login.html", 300);
   }
-  else if(diff > 120){
-    // swipe right → signup
+  else if(currentX > 120){
     circle.classList.add("expand");
     document.getElementById("overlay").classList.add("active");
-
-    circle.addEventListener("transitionend", ()=>{
-      window.location.href = "signup.html";
-    }, { once: true });
+    setTimeout(()=> window.location.href="signup.html", 300);
   }
   else{
-    // snap back to center if di umabot sa threshold
+    // SNAP BACK CENTER
     circle.style.transition = "transform 0.6s cubic-bezier(.25,.8,.25,1)";
     circle.style.transform = "translate(-50%, -50%)";
   }
 });
 
-// OPTIONAL: AUTH PAGE SWIPE BACK TO MAIN
-window.addEventListener("mousemove", (e)=>{
-  let path = window.location.pathname;
-  if(!dragging) return;
+// RESET WHEN BACK TO MAIN PAGE
+window.addEventListener("load", ()=>{
+  let o = document.getElementById("overlay");
+  if(o) o.classList.remove("active");
 
-  if(path.includes("login") && e.clientX > window.innerWidth * 0.3){
-    circle.style.transform = `translate(-50%, -50%) scale(0.4)`;
-    setTimeout(()=> window.location.href = "index.html", 400);
-  }
-
-  if(path.includes("signup") && e.clientX < window.innerWidth * 0.7){
-    circle.style.transform = `translate(-50%, -50%) scale(0.4)`;
-    setTimeout(()=> window.location.href = "index.html", 400);
-  }
+  circle.classList.remove("expand");
+  circle.style.transition = "transform 0.3s ease";
+  circle.style.transform = "translate(-50%, -50%)";
+  circle.style.opacity = 1;
 });
