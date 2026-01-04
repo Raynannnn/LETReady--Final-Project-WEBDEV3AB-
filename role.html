@@ -18,18 +18,23 @@ function setRole(role){
   let current = localStorage.getItem("currentUser");
   let users = getUsers();
 
-  users.forEach(u=>{
-    if(u.name===current){
-      u.role=role;
-      if(role==="admin"){
-        u.status="pending";
-        alert("Admin request sent");
-      }
-    }
-  });
+  for(let i = 0; i < users.length; i++){
+    if(users[i].name === current){
+      users[i].role = role; // ito yung kulang mo, now nauupdate na
 
-  saveUsers(users);
-  window.location.href="index.html";
+      if(role === "admin"){
+        users[i].status = "pending";
+        alert("Admin request sent. Please wait for approval.");
+        saveUsers(users);
+        window.location.href="index.html"; // admin stays here
+      } 
+      else {
+        saveUsers(users);
+        window.location.href="signup-details.html"; // user/org goes to details
+      }
+      return; // stop function para di ma-override
+    }
+  }
 }
 </script>
 

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Main Site</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* LAYOUT BASED ON WIREFRAME */
+.container{
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  padding:40px;
+}
+
+/* LEFT SIDE */
+.left{
+  width:30%;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+.create-box{
+  background:white;
+  padding:20px;
+  border-radius:15px;
+  border:3px solid #1a3cff;
+  box-shadow:0 5px 15px rgba(0,0,255,0.2);
+}
+.create-box h3{
+  margin:0 0 10px 0;
+  font-weight:900;
+  color:#1a3cff;
+}
+.create-box p{
+  font-size:15px;
+  opacity:0.8;
+}
+
+/* PENDING PROJECTS */
+.pending-list button{
+  width:200px;
+  padding:12px;
+  margin:6px 0;
+  border:2px solid #1a3cff;
+  background:white;
+  color:#1a3cff;
+  font-weight:800;
+  border-radius:10px;
+  cursor:pointer;
+  transition:0.3s;
+}
+.pending-list button:hover{
+  background:#1a3cff;
+  color:white;
+}
+
+/* CENTER (REVIEWER CARDS) */
+.center{
+  width:45%;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;
+}
+.card{
+  background:white;
+  width:180px;
+  height:180px;
+  border:3px solid #1a3cff;
+  border-radius:15px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  box-shadow:0 5px 15px rgba(0,0,255,0.15);
+}
+.stars{
+  margin-top:8px;
+}
+.stars span{
+  font-size:18px;
+  color:#f2b01e;
+}
+
+/* RIGHT SIDE PROFILE */
+.right{
+  width:22%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:15px;
+}
+.profile-img{
+  width:80px;
+  height:80px;
+  background:#1a3cff;
+  border-radius:50%;
+  border:4px solid white;
+  box-shadow:0 0 15px rgba(255,255,255,0.4);
+}
+.profile-name{
+  background:white;
+  padding:12px 20px;
+  border-radius:12px;
+  border:3px solid #1a3cff;
+  width:200px;
+  text-align:center;
+  font-weight:900;
+  color:#1a3cff;
+  box-shadow:0 4px 12px rgba(0,0,255,0.18);
+}
+
+/* PARTICLES (LIGHTWEIGHT) */
+#particles{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+}
+.particle{
+  position:absolute;
+  width:5px;
+  height:5px;
+  background:white;
+  opacity:0.5;
+  border-radius:50%;
+  animation: float 6s linear infinite;
+}
+@keyframes float{
+  from{ transform:translateY(100vh); }
+  to{ transform:translateY(-10vh); }
+}
+</style>
+</head>
+<body>
+
+<div id="particles"></div>
+
+<h2 style="text-align:center; color:white; font-weight:900;">THESIS REVIEWER PLATFORM</h2>
+
+<div class="container">
+
+  <!-- LEFT -->
+  <div class="left">
+    <div class="create-box">
+      <h3>Create a Reviewer</h3>
+      <p>Description</p>
+    </div>
+
+    <div>
+      <h3 style="color:white; font-weight:900;">Pending Projects</h3>
+      <div class="pending-list" id="pendingList"></div>
+    </div>
+  </div>
+
+  <!-- CENTER -->
+  <div class="center">
+    <div class="card">Reviewer 1 <div class="stars"><span>★ ★ ★</span></div></div>
+    <div class="card">Reviewer 2 <div class="stars"><span>★ ★ ★</span></div></div>
+    <div class="card">Reviewer 3 <div class="stars"><span>★ ★ ★</span></div></div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+    <div class="profile-img"></div>
+    <div class="profile-name" id="NAME">Name</div>
+
+    <div class="create-box" style="width:200px; text-align:center;">
+      <h3>Projects</h3>
+      <button>First Project</button>
+      <button>Second Project</button>
+      <button>Third Project</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="database.js"></script>
+<script>
+/* LOAD USER PROFILE */
+let users = getUsers();
+let current = localStorage.getItem("currentUser");
+let user = users.find(u => u.name === current);
+
+if(user){
+  document.getElementById("NAME").innerText = user.fullname;
+  let list = document.getElementById("pendingList");
+  if(user.pendingProjects){
+    user.pendingProjects.forEach(p=>{
+      list.innerHTML += `<button>${p}</button>`;
+    });
+  }
+}
+
+/* GENERATE PARTICLES */
+let pBox = document.getElementById("particles");
+for(let i=0;i<35;i++){
+  let p = document.createElement("div");
+  p.className="particle";
+  p.style.left=Math.random()*100+"%";
+  p.style.animationDuration=4+Math.random()*5+"s";
+  pBox.appendChild(p);
+}
+</script>
+
+</body>
+</html>
