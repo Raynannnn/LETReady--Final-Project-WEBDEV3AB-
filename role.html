@@ -20,22 +20,27 @@ function setRole(role){
 
   for(let i = 0; i < users.length; i++){
     if(users[i].name === current){
-      users[i].role = role; // ito yung kulang mo, now nauupdate na
+      users[i].role = role;
 
       if(role === "admin"){
         users[i].status = "pending";
         alert("Admin request sent. Please wait for approval.");
         saveUsers(users);
-        window.location.href="index.html"; // admin stays here
-      } 
-      else {
-        saveUsers(users);
-        window.location.href="signup-details.html"; // user/org goes to details
+        window.location.href="index.html";
       }
-      return; // stop function para di ma-override
+      else if(role === "organization"){
+        saveUsers(users);
+        window.location.href="org-details.html"; // goes to org registration details
+      }
+      else{
+        saveUsers(users);
+        window.location.href="signup-details.html"; // normal user details
+      }
+      return;
     }
   }
 }
+
 </script>
 
 </body>

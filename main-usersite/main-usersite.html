@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blue Wireframe Dashboard</title>
+
+<style>
+* { box-sizing: border-box; font-family: Arial, sans-serif; font-size: 0.8rem; }
+body {
+  margin: 0;
+  background: #1a3cff;
+  min-height: 100vh;
+  color: white;
+  overflow-x: hidden;
+  padding-top: 40px;
+}
+
+#particles { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+.particle {
+  position:absolute;
+  width:4px;
+  height:4px;
+  background:white;
+  opacity:0.4;
+  border-radius:50%;
+  animation: float linear infinite;
+}
+@keyframes float { from { transform: translateY(100vh); } to { transform: translateY(-10vh); } }
+
+.container {
+  display: flex;
+  gap: 18px;
+  padding: 0 35px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+.left { width: 180px; flex-shrink: 0; padding-top: 60px; }
+.menu-trigger {
+  font-weight: 900;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+.menu-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.menu-content.open { max-height: 250px; }
+
+.menu-link {
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: white;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.menu-link:hover { opacity: 0.7; }
+
+.center {
+  flex-grow: 1;
+  border: 3px solid white;
+  border-radius: 35px;
+  padding: 25px;
+  min-height: 650px;
+  background: rgba(255,255,255,0.04);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.dropdown-row { display: flex; gap: 18px; margin-bottom: 30px; }
+
+.dropdown-box {
+  flex: 1;
+  background: white;
+  border-radius: 12px;
+  color: black;
+  border: 2px solid black;
+  position: relative;
+  min-height: 90px;
+}
+
+.dropdown-header {
+  background: white;
+  border: 2px solid black;
+  border-radius: 15px;
+  padding: 8px;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85%;
+}
+
+.dropdown-list {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  padding-right: 15px;
+  margin-top: 25px;
+  text-align: right;
+  font-weight: 800;
+  color: #1a3cff;
+}
+.dropdown-list.open { max-height: 180px; padding-bottom: 10px; }
+
+.dropdown-item { cursor: pointer; margin: 5px 0; }
+.dropdown-item:hover { color: black; }
+
+#dashboardGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+.card {
+  background:#1a3cff;
+  border-radius:20px;
+  height:180px;
+  display:flex;
+  flex-direction:column;
+  color:white;
+  cursor:pointer;
+  border:2px solid black;
+  transition:transform 0.15s ease;
+}
+.card:hover{ transform: translateY(-4px); }
+
+.card-top{ flex:3; position:relative; border-bottom:2px solid black; }
+.shield-icon{ position:absolute; top:12px; right:12px; font-size:22px; }
+.card-bottom{ flex:1; display:flex; align-items:center; padding-left:15px; }
+.stars{ color:#f2b01e; font-size:1.2rem; letter-spacing:3px; }
+
+.right{ width:230px; display:flex; flex-direction:column; align-items:center; gap:12px; }
+.profile-img{
+  width:90px; height:90px;
+  border-radius:50%;
+  border:3px solid white;
+  background-color:#1a3cff;
+  background-size:cover;
+  background-position:center;
+  cursor:pointer;
+}
+.details-box{
+  width:100%; height:150px;
+  background:white;
+  border-radius:18px;
+  color:#1a3cff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  border:2px solid black;
+  font-size:0.75rem;
+}
+.assess-btn{
+  width:100%; padding:6px;
+  background:white; color:#1a3cff;
+  border:2px solid black; border-radius:12px;
+  font-weight:900; cursor:pointer;
+  font-size:0.7rem;
+  text-transform:uppercase;
+}
+input[type=file]{ display:none; }
+</style>
+</head>
+
+<body>
+<div id="particles"></div>
+
+<div class="container">
+  <div class="left">
+    <div class="menu-trigger" onclick="toggleSimple('slidingMenu')">MENU ▾</div>
+    <div class="menu-content open" id="slidingMenu">
+      <div class="menu-link" onclick="switchView('dashboard')">DASHBOARD</div>
+      <div class="menu-link" onclick="switchView('reviewer')">REVIEWER</div>
+      <div class="menu-link">BOOKMARKS</div>
+      <div class="menu-link">ASSESSMENTS</div>
+    </div>
+  </div>
+
+  <div class="center">
+    <div class="dropdown-row">
+      <div class="dropdown-box">
+        <div class="dropdown-header" onclick="toggleDropdown('subjectList')">SUBJECT CATEGORIES</div>
+        <div class="dropdown-list" id="subjectList">
+          <div class="dropdown-item" onclick="selectItem(this)">ICT</div>
+          <div class="dropdown-item" onclick="selectItem(this)">ProfEd</div>
+          <div class="dropdown-item" onclick="selectItem(this)">GenEd</div>
+        </div>
+      </div>
+
+      <div class="dropdown-box">
+        <div class="dropdown-header" onclick="toggleDropdown('diffList')">DIFFICULTY LEVEL</div>
+        <div class="dropdown-list" id="diffList">
+          <div class="dropdown-item" onclick="selectItem(this)">EASY</div>
+          <div class="dropdown-item" onclick="selectItem(this)">MEDIUM</div>
+          <div class="dropdown-item" onclick="selectItem(this)">EXPERT</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="dashboardGrid">
+      <div class="card" onclick="switchView('reviewer')">
+        <div class="card-top"><span class="shield-icon">🛡️</span></div>
+        <div class="card-bottom"><span class="stars">☆☆☆</span></div>
+      </div>
+      <div class="card" onclick="switchView('reviewer')">
+        <div class="card-top"><span class="shield-icon">🛡️</span></div>
+        <div class="card-bottom"><span class="stars">☆☆☆</span></div>
+      </div>
+    </div>
+
+    <div id="reviewerView">
+      <div class="rev-title">TITLE</div>
+      <div class="rev-desc-box">Description</div>
+      <div class="rev-video-box">VIDEO</div>
+      <div class="rev-credits-box">CREDITS</div>
+      <button class="assess-btn" onclick="switchView('dashboard')">BACK</button>
+    </div>
+  </div>
+
+  <div class="right">
+    <label>
+      <div class="profile-img" id="profileImg"></div>
+      <input type="file" accept="image/*" onchange="uploadPic(event)">
+    </label>
+    <div>NAME</div>
+    <div class="details-box">PROFILE DETAILS</div>
+    <button class="assess-btn">FIRST ASSESS</button>
+  </div>
+</div>
+
+<script>
+// Optimized particles
+for(let i=0;i<18;i++){
+  let p=document.createElement("div");
+  p.className="particle";
+  p.style.left=Math.random()*100+"%";
+  p.style.animationDuration=6+Math.random()*6+"s";
+  document.getElementById("particles").appendChild(p);
+}
+
+function toggleSimple(id){
+  document.getElementById(id).classList.toggle("open");
+}
+
+// Proper one-at-a-time dropdown
+function toggleDropdown(id){
+  document.getElementById("subjectList").classList.remove("open");
+  document.getElementById("diffList").classList.remove("open");
+  document.getElementById(id).classList.toggle("open");
+}
+
+function switchView(v){
+  const dash=document.getElementById("dashboardGrid");
+  const rev=document.getElementById("reviewerView");
+  if(v==='reviewer'){ dash.style.display='none'; rev.style.display='flex'; }
+  else{ dash.style.display='grid'; rev.style.display='none'; }
+}
+
+function selectItem(el){
+  let sib=el.parentElement.children;
+  for(let i=0;i<sib.length;i++){ sib[i].style.color="#1a3cff"; }
+  el.style.color="white";
+}
+
+function uploadPic(e){
+  if(e.target.files[0]){
+    document.getElementById("profileImg").style.backgroundImage=`url(${URL.createObjectURL(e.target.files[0])})`;
+  }
+}
+</script>
+</body>
+</html>

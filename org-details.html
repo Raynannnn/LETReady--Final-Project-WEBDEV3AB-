@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Organization Details</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body style="flex-direction:column; gap:15px; padding:40px;">
+
+<h2>Organization Registration</h2>
+
+<label>FULL ORG NAME:</label>
+<input type="text" id="orgfull" placeholder="Enter organization name">
+
+<label>ORG EMAIL:</label>
+<input type="text" id="orgemail" placeholder="Enter org email">
+
+<label>CONTACT NUMBER:</label>
+<input type="text" id="orgcontact" placeholder="Enter contact number">
+
+<button onclick="saveOrgDetails()">SUBMIT</button>
+
+<script src="database.js"></script>
+<script>
+function saveOrgDetails(){
+  let users = getUsers();
+  let current = localStorage.getItem("currentUser");
+
+  users.forEach(u=>{
+    if(u.name === current){
+      u.fullOrgName = document.getElementById("orgfull").value;
+      u.orgEmail = document.getElementById("orgemail").value;
+      u.orgContact = document.getElementById("orgcontact").value;
+      u.pendingProjects = ["Org Project 1", "Org Project 2"];
+    }
+  });
+
+  saveUsers(users);
+  window.location.href="main-site.html"; // after org details, goes to inside site
+}
+</script>
+
+</body>
+</html>

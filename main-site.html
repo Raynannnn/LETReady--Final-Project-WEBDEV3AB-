@@ -4,204 +4,175 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Main Site</title>
-<link rel="stylesheet" href="style.css">
+
 <style>
-/* LAYOUT BASED ON WIREFRAME */
-.container{
-  width:100%;
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  padding:40px;
+*{ box-sizing:border-box; font-family:Arial, sans-serif; }
+body{ margin:0; background:#1a3cff; min-height:100vh; color:white; }
+
+/* HEADER */
+.header{ text-align:center; padding:25px 0; font-weight:900; letter-spacing:1px; }
+
+/* MAIN LAYOUT */
+.container{ width:100%; display:flex; gap:30px; padding:30px 40px; align-items:flex-start; }
+
+/* COMMON BOX */
+.box{
+  background:white; padding:20px; border-radius:15px; border:3px solid #1a3cff;
+  box-shadow:0 5px 15px rgba(0,0,255,0.15); color:#1a3cff;
 }
 
-/* LEFT SIDE */
-.left{
-  width:30%;
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-}
-.create-box{
-  background:white;
-  padding:20px;
-  border-radius:15px;
-  border:3px solid #1a3cff;
-  box-shadow:0 5px 15px rgba(0,0,255,0.2);
-}
-.create-box h3{
-  margin:0 0 10px 0;
-  font-weight:900;
-  color:#1a3cff;
-}
-.create-box p{
-  font-size:15px;
-  opacity:0.8;
-}
+/* LEFT */
+.left{ width:28%; display:flex; flex-direction:column; gap:25px; }
 
-/* PENDING PROJECTS */
-.pending-list button{
-  width:200px;
-  padding:12px;
-  margin:6px 0;
-  border:2px solid #1a3cff;
-  background:white;
-  color:#1a3cff;
-  font-weight:800;
-  border-radius:10px;
-  cursor:pointer;
-  transition:0.3s;
-}
-.pending-list button:hover{
-  background:#1a3cff;
-  color:white;
-}
+.create-box{ cursor:pointer; }
 
-/* CENTER (REVIEWER CARDS) */
+.create-box h3{ margin:0 0 8px; font-weight:900; }
+.create-box p{ font-size:14px; opacity:0.8; }
+
+.pending-title{ font-weight:900; margin-bottom:10px; }
+.pending-list{ display:flex; flex-direction:column; gap:8px; }
+
+.btn{
+  padding:10px; border-radius:10px; border:2px solid #1a3cff; background:white;
+  color:#1a3cff; font-weight:800; cursor:pointer; transition:0.3s;
+}
+.btn:hover{ background:#1a3cff; color:white; }
+
+/* CENTER */
 .center{
-  width:45%;
+  width:44%;
   display:grid;
-  grid-template-columns:repeat(2,1fr);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
   gap:20px;
 }
 .card{
-  background:white;
-  width:180px;
-  height:180px;
-  border:3px solid #1a3cff;
-  border-radius:15px;
+  min-height:170px;
   display:flex;
+  flex-direction:column;
   justify-content:center;
   align-items:center;
-  flex-direction:column;
-  box-shadow:0 5px 15px rgba(0,0,255,0.15);
-}
-.stars{
-  margin-top:8px;
-}
-.stars span{
-  font-size:18px;
-  color:#f2b01e;
-}
-
-/* RIGHT SIDE PROFILE */
-.right{
-  width:22%;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:15px;
-}
-.profile-img{
-  width:80px;
-  height:80px;
-  background:#1a3cff;
-  border-radius:50%;
-  border:4px solid white;
-  box-shadow:0 0 15px rgba(255,255,255,0.4);
-}
-.profile-name{
-  background:white;
-  padding:12px 20px;
-  border-radius:12px;
-  border:3px solid #1a3cff;
-  width:200px;
-  text-align:center;
   font-weight:900;
-  color:#1a3cff;
-  box-shadow:0 4px 12px rgba(0,0,255,0.18);
+  border-radius:15px;
+  background:#f0f4ff;
+  box-shadow:0 8px 25px rgba(0,0,255,0.1);
+  padding:15px;
+  text-align:center;
 }
+.stars{ margin-top:8px; color:#f2b01e; font-size:18px; }
 
-/* PARTICLES (LIGHTWEIGHT) */
-#particles{
-  position:fixed;
-  inset:0;
-  z-index:-1;
-  pointer-events:none;
-}
-.particle{
-  position:absolute;
-  width:5px;
-  height:5px;
-  background:white;
-  opacity:0.5;
-  border-radius:50%;
-  animation: float 6s linear infinite;
-}
-@keyframes float{
-  from{ transform:translateY(100vh); }
-  to{ transform:translateY(-10vh); }
-}
+/* RIGHT */
+.right{ width:22%; display:flex; flex-direction:column; align-items:center; gap:18px; }
+.profile-img{ width:90px; height:90px; border-radius:50%; background:#1a3cff; border:4px solid white; }
+.profile-name{ width:100%; text-align:center; padding:12px; font-weight:900; }
+
+.right .box button{ width:100%; margin-top:8px; }
+
+/* BACK BUTTON */
+.back-btn{ width:100%; margin-top:10px; }
+
+/* PARTICLES */
+#particles{ position:fixed; inset:0; z-index:-1; }
+.particle{ position:absolute; width:5px; height:5px; background:white; opacity:0.5; border-radius:50%; animation: float 6s linear infinite; }
+@keyframes float{ from{transform:translateY(100vh);} to{transform:translateY(-10vh);} }
 </style>
 </head>
+
 <body>
 
 <div id="particles"></div>
 
-<h2 style="text-align:center; color:white; font-weight:900;">THESIS REVIEWER PLATFORM</h2>
+<div class="header">
+  <h2>THESIS REVIEWER PLATFORM</h2>
+</div>
 
 <div class="container">
 
   <!-- LEFT -->
   <div class="left">
-    <div class="create-box">
+    <div class="box create-box" onclick="location.href='create-subject.html'">
       <h3>Create a Reviewer</h3>
-      <p>Description</p>
+      <p>Start creating your own reviewer based on subject and difficulty</p>
     </div>
 
     <div>
-      <h3 style="color:white; font-weight:900;">Pending Projects</h3>
+      <div class="pending-title">Pending Projects</div>
       <div class="pending-list" id="pendingList"></div>
     </div>
   </div>
 
   <!-- CENTER -->
-  <div class="center">
-    <div class="card">Reviewer 1 <div class="stars"><span>★ ★ ★</span></div></div>
-    <div class="card">Reviewer 2 <div class="stars"><span>★ ★ ★</span></div></div>
-    <div class="card">Reviewer 3 <div class="stars"><span>★ ★ ★</span></div></div>
+  <div class="center" id="reviewerCenter">
+    <!-- Dynamically filled with reviewers -->
   </div>
 
   <!-- RIGHT -->
   <div class="right">
     <div class="profile-img"></div>
-    <div class="profile-name" id="NAME">Name</div>
+    <div class="box profile-name" id="NAME">Name</div>
 
-    <div class="create-box" style="width:200px; text-align:center;">
-      <h3>Projects</h3>
-      <button>First Project</button>
-      <button>Second Project</button>
-      <button>Third Project</button>
+    <div class="box">
+      <h3 style="margin:0 0 10px;">Projects</h3>
+      <div id="projectsButtons"></div>
     </div>
+
+    <button class="btn back-btn" onclick="logout()">Back to Main Page</button>
   </div>
 
 </div>
 
-<script src="database.js"></script>
 <script>
-/* LOAD USER PROFILE */
-let users = getUsers();
+/* PARTICLES */
+for(let i=0;i<35;i++){
+  let p=document.createElement("div");
+  p.className="particle";
+  p.style.left=Math.random()*100+"%";
+  p.style.animationDuration=4+Math.random()*5+"s";
+  document.getElementById("particles").appendChild(p);
+}
+
+/* LOAD USERS */
+let users = JSON.parse(localStorage.getItem("users")) || [];
 let current = localStorage.getItem("currentUser");
 let user = users.find(u => u.name === current);
 
+// SHOW USER NAME
 if(user){
-  document.getElementById("NAME").innerText = user.fullname;
-  let list = document.getElementById("pendingList");
+  document.getElementById("NAME").innerText =
+    user.role === "organization" ? user.fullOrgName : user.fullname;
+
+  // LOAD PENDING PROJECTS
   if(user.pendingProjects){
     user.pendingProjects.forEach(p=>{
-      list.innerHTML += `<button>${p}</button>`;
+      let btn=document.createElement("button");
+      btn.className="btn";
+      btn.innerText=p;
+      document.getElementById("pendingList").appendChild(btn);
     });
   }
 }
 
-/* GENERATE PARTICLES */
-let pBox = document.getElementById("particles");
-for(let i=0;i<35;i++){
-  let p = document.createElement("div");
-  p.className="particle";
-  p.style.left=Math.random()*100+"%";
-  p.style.animationDuration=4+Math.random()*5+"s";
-  pBox.appendChild(p);
+// LOAD REVIEWERS
+let reviewers = JSON.parse(localStorage.getItem("reviewers")) || [];
+let reviewerCenter = document.getElementById("reviewerCenter");
+
+reviewers.forEach((r,index)=>{
+  let card = document.createElement("div");
+  card.className="card";
+  card.innerHTML=`<b>${r.title}</b><br>
+                  <span>${r.subject} | ${r.difficulty}</span>
+                  <div class="stars">★ ★ ★</div>`;
+  reviewerCenter.appendChild(card);
+
+  // Optional: add to projects on right panel
+  let btn = document.createElement("button");
+  btn.className="btn";
+  btn.innerText=r.title;
+  document.getElementById("projectsButtons").appendChild(btn);
+});
+
+function logout(){
+  localStorage.removeItem("currentUser");
+  location.href="index.html";
 }
 </script>
 
