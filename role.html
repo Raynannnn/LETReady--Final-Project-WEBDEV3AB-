@@ -1,16 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Select Role</title>
-<link rel="stylesheet" href="style.css">
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:30px;
+  background: linear-gradient(135deg, #1a3cff, #00b4ff);
+  font-family: Arial, sans-serif;
+  color:white;
+}
+
+h2{
+  font-size:26px;
+  font-weight:900;
+  text-align:center;
+}
+
+button{
+  padding:15px 35px;
+  font-size:18px;
+  font-weight:700;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  transition:0.3s;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+button:hover{
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+button:nth-child(2){
+  background:#f2b01e;
+  color:white;
+}
+
+button:nth-child(3){
+  background:#ff5959;
+  color:white;
+}
+
+button:nth-child(1){
+  background:#00ffcc;
+  color:#1a3cff;
+}
+
+.container{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  align-items:center;
+}
+</style>
 </head>
-<body style="flex-direction:column; gap:20px;">
+<body>
 
-<h2>Do you want to be an:</h2>
+<h2>Which role do you want to be?</h2>
 
-<button onclick="setRole('user')">USER</button>
-<button onclick="setRole('organization')">ORGANIZATION</button>
-<button onclick="setRole('admin')">ADMIN</button>
+<div class="container">
+  <button onclick="setRole('user')">USER</button>
+  <button onclick="setRole('organization')">ORGANIZATION</button>
+  <button onclick="setRole('admin')">ADMIN</button>
+</div>
 
 <script src="database.js"></script>
 <script>
@@ -30,7 +92,7 @@ function setRole(role){
       }
       else if(role === "organization"){
         saveUsers(users);
-        window.location.href="org-details.html"; // goes to org registration details
+        window.location.href="org-details.html"; // organization registration details
       }
       else{
         saveUsers(users);
@@ -40,7 +102,6 @@ function setRole(role){
     }
   }
 }
-
 </script>
 
 </body>

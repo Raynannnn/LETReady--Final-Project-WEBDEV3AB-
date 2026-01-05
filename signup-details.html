@@ -4,28 +4,103 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Profile Details</title>
-<link rel="stylesheet" href="style.css">
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:20px;
+  background: linear-gradient(135deg, #1a3cff, #00b4ff);
+  font-family: Arial, sans-serif;
+  color:white;
+  padding:30px;
+}
+
+h2{
+  font-size:28px;
+  font-weight:900;
+  text-align:center;
+  margin-bottom:10px;
+}
+
+label{
+  font-weight:700;
+  margin-top:10px;
+}
+
+input{
+  padding:12px 15px;
+  width:300px;
+  max-width:90%;
+  border-radius:12px;
+  border:none;
+  outline:none;
+  font-size:14px;
+  margin-top:5px;
+}
+
+input:focus{
+  border:2px solid #f2b01e;
+  background:white;
+  color:#1a3cff;
+}
+
+button{
+  padding:12px 25px;
+  margin-top:15px;
+  border:none;
+  border-radius:12px;
+  font-weight:700;
+  font-size:16px;
+  cursor:pointer;
+  background:#f2b01e;
+  color:white;
+  transition:0.3s;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+button:hover{
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.container{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background: rgba(255,255,255,0.1);
+  padding:30px;
+  border-radius:25px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  backdrop-filter: blur(10px);
+}
+</style>
 </head>
-<body style="flex-direction:column; gap:15px; padding:40px;">
+<body>
 
 <h2>Profile Details</h2>
 
-<label>FULL NAME:</label>
-<input type="text" id="full" placeholder="Enter full name">
+<div class="container">
+  <label>FULL NAME:</label>
+  <input type="text" id="full" placeholder="Enter full name">
 
-<label>AGE:</label>
-<input type="number" id="age" placeholder="Age">
+  <label>AGE:</label>
+  <input type="number" id="age" placeholder="Age">
 
-<label>EMAIL:</label>
-<input type="text" id="email" placeholder="Enter email">
+  <label>EMAIL:</label>
+  <input type="text" id="email" placeholder="Enter email">
 
-<label>CONTACT:</label>
-<input type="text" id="contact" placeholder="Enter contact number">
+  <label>CONTACT:</label>
+  <input type="text" id="contact" placeholder="Enter contact number">
 
-<label>GENDER:</label>
-<input type="text" id="gender" placeholder="Enter gender">
+  <label>GENDER:</label>
+  <input type="text" id="gender" placeholder="Enter gender">
 
-<button onclick="saveDetails()">SUBMIT</button>
+  <button onclick="saveDetails()">SUBMIT</button>
+</div>
 
 <script src="database.js"></script>
 <script>
@@ -45,7 +120,7 @@ function saveDetails(){
   });
 
   saveUsers(users);
- window.location.href="main-usersite.html";
+  window.location.href="main-usersite.html";
 }
 </script>
 

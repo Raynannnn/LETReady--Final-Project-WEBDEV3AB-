@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assessment</title>
+
+<style>
+body{
+  margin:0;
+  background:#1a3cff;
+  font-family:Arial, sans-serif;
+  color:white;
+}
+
+.wrapper{
+  max-width:1100px;
+  margin:40px auto;
+  padding:20px;
+}
+
+h2{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+
+.flip-card{
+  perspective:1000px;
+}
+
+.flip-inner{
+  position:relative;
+  width:100%;
+  height:200px;
+  transition:transform 0.6s;
+  transform-style:preserve-3d;
+  cursor:pointer;
+}
+
+.flip-card.flipped .flip-inner{
+  transform:rotateY(180deg);
+}
+
+.front, .back{
+  position:absolute;
+  inset:0;
+  border-radius:18px;
+  backface-visibility:hidden;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+  border:2px solid black;
+}
+
+.front{
+  background:white;
+  color:#1a3cff;
+  font-weight:900;
+}
+
+.back{
+  background:#e0f0ff;
+  color:#1a3cff;
+  transform:rotateY(180deg);
+  gap:10px;
+}
+
+.back button{
+  padding:6px 12px;
+  border:2px solid #1a3cff;
+  background:white;
+  cursor:pointer;
+  font-weight:900;
+  border-radius:10px;
+}
+
+.back button:hover{
+  background:#1a3cff;
+  color:white;
+}
+
+#finishBtn{
+  margin:40px auto 0;
+  display:block;
+  padding:10px 20px;
+  font-weight:900;
+  border-radius:12px;
+  border:2px solid black;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+  <h2>ASSESSMENT – ICT / PROFED / GENED</h2>
+
+  <div class="cards" id="cardContainer"></div>
+
+  <button id="finishBtn">FINISH ASSESSMENT</button>
+</div>
+
+<script>
+const questions = [
+  { q:"CPU stands for?", a:"Central Processing Unit" },
+  { q:"RAM is used for?", a:"Temporary memory" },
+  { q:"HTML means?", a:"HyperText Markup Language" },
+  { q:"Bloom’s highest level?", a:"Create" },
+  { q:"Capital of France?", a:"Paris" },
+  { q:"Photosynthesis is?", a:"Food-making process of plants" }
+];
+
+let score = 0;
+let answered = Array(questions.length).fill(false);
+
+const container = document.getElementById("cardContainer");
+
+questions.forEach((item,index)=>{
+  const card = document.createElement("div");
+  card.className = "flip-card";
+  card.innerHTML = `
+    <div class="flip-inner">
+      <div class="front">${item.q}</div>
+      <div class="back">
+        <div>${item.a}</div>
+        <button onclick="markCorrect(${index}, event)">✔ CORRECT</button>
+      </div>
+    </div>
+  `;
+  card.onclick = ()=> card.classList.toggle("flipped");
+  container.appendChild(card);
+});
+
+function markCorrect(i,e){
+  e.stopPropagation();
+  if(!answered[i]){
+    score++;
+    answered[i]=true;
+  }
+}
+
+document.getElementById("finishBtn").onclick = ()=>{
+  localStorage.setItem("latestScore", score);
+  alert("Your score: "+score);
+  window.location.href="main-usersite.html";
+};
+</script>
+
+</body>
+</html>

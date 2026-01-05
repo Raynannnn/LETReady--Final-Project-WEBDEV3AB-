@@ -74,6 +74,37 @@ body{ margin:0; background:#1a3cff; min-height:100vh; color:white; }
 #particles{ position:fixed; inset:0; z-index:-1; }
 .particle{ position:absolute; width:5px; height:5px; background:white; opacity:0.5; border-radius:50%; animation: float 6s linear infinite; }
 @keyframes float{ from{transform:translateY(100vh);} to{transform:translateY(-10vh);} }
+
+.card-actions{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+}
+
+.card-actions button{
+  flex:1;
+  padding:6px;
+  border:none;
+  border-radius:10px;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.edit-btn{
+  background:#f2b01e;
+  color:white;
+}
+
+.delete-btn{
+  background:#ff5959;
+  color:white;
+}
+
+.card-actions button:hover{
+  opacity:0.85;
+}
+
 </style>
 </head>
 
@@ -114,7 +145,10 @@ body{ margin:0; background:#1a3cff; min-height:100vh; color:white; }
       <h3 style="margin:0 0 10px;">Projects</h3>
       <div id="projectsButtons"></div>
     </div>
-
+<!-- ADMIN PANEL BUTTON -->
+  <button class="btn" id="adminPanelBtn" style="display:none;">
+    Admin Approval
+  </button>
     <button class="btn back-btn" onclick="logout()">Back to Main Page</button>
   </div>
 
@@ -131,48 +165,103 @@ for(let i=0;i<35;i++){
 }
 
 /* LOAD USERS */
-let users = JSON.parse(localStorage.getItem("users")) || [];
-let current = localStorage.getItem("currentUser");
-let user = users.find(u => u.name === current);
+let user = JSON.parse(localStorage.getItem("currentUser"));
 
-// SHOW USER NAME
 if(user){
   document.getElementById("NAME").innerText =
     user.role === "organization" ? user.fullOrgName : user.fullname;
-
-  // LOAD PENDING PROJECTS
-  if(user.pendingProjects){
-    user.pendingProjects.forEach(p=>{
-      let btn=document.createElement("button");
-      btn.className="btn";
-      btn.innerText=p;
-      document.getElementById("pendingList").appendChild(btn);
-    });
-  }
 }
 
-// LOAD REVIEWERS
+// SHOW ADMIN PANEL BUTTON IF ADMIN
+let adminBtn = document.getElementById("adminPanelBtn");
+
+if(user && user.role === "admin"){
+  adminBtn.style.display = "block";
+
+  adminBtn.onclick = ()=>{
+    location.href = "../admin.html";
+  };
+}
+
+
+/* LOAD REVIEWERS + SCORES */
 let reviewers = JSON.parse(localStorage.getItem("reviewers")) || [];
-let reviewerCenter = document.getElementById("reviewerCenter");
+let scores = JSON.parse(localStorage.getItem("reviewerScores")) || [];
 
-reviewers.forEach((r,index)=>{
-  let card = document.createElement("div");
-  card.className="card";
-  card.innerHTML=`<b>${r.title}</b><br>
-                  <span>${r.subject} | ${r.difficulty}</span>
-                  <div class="stars">★ ★ ★</div>`;
-  reviewerCenter.appendChild(card);
+reviewers.forEach((r,i)=>{
+  let c = document.createElement("div");
+  c.className = "card";
 
-  // Optional: add to projects on right panel
-  let btn = document.createElement("button");
-  btn.className="btn";
-  btn.innerText=r.title;
-  document.getElementById("projectsButtons").appendChild(btn);
+  let related = scores.filter(s => s.reviewerIndex === i);
+  let lastScore = related.length
+    ? related[related.length - 1].score + " / " + related[related.length - 1].total
+    : "No attempt";
+  let attempts = related.length;
+
+  c.innerHTML = `
+    <b>${r.title}</b><br>
+    ${r.subject} | ${r.difficulty}
+    <div class="stars">★ ★ ★</div>
+
+    <div style="
+      margin-top:8px;
+      font-size:13px;
+      background:#1a3cff;
+      color:white;
+      padding:6px 10px;
+      border-radius:12px;
+    ">
+      Score: ${lastScore}<br>
+      Attempts: ${attempts}
+    </div>
+
+    <div class="card-actions">
+      <button class="edit-btn">Edit</button>
+      <button class="delete-btn">Delete</button>
+    </div>
+  `;
+
+  // 👉 OPEN REVIEWER (card click)
+  c.onclick = ()=>{
+    localStorage.setItem("activeReviewer", i);
+    location.href = "../reviewer-view.html";
+  };
+
+  // 👉 EDIT
+  c.querySelector(".edit-btn").onclick = (e)=>{
+    e.stopPropagation(); // para di mag-open reviewer
+    localStorage.setItem("editReviewerIndex", i);
+    location.href = "create-questions.html";
+  };
+
+  // 👉 DELETE
+  c.querySelector(".delete-btn").onclick = (e)=>{
+    e.stopPropagation();
+
+    if(confirm("Delete this reviewer?")){
+      reviewers.splice(i,1);
+
+      // delete related scores
+      scores = scores.filter(s => s.reviewerIndex !== i);
+
+      // reindex scores
+      scores.forEach(s=>{
+        if(s.reviewerIndex > i) s.reviewerIndex--;
+      });
+
+      localStorage.setItem("reviewers", JSON.stringify(reviewers));
+      localStorage.setItem("reviewerScores", JSON.stringify(scores));
+      location.reload();
+    }
+  };
+
+  reviewerCenter.appendChild(c);
 });
+
 
 function logout(){
   localStorage.removeItem("currentUser");
-  location.href="index.html";
+  location.href="../index.html";
 }
 </script>
 

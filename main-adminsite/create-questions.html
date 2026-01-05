@@ -291,33 +291,35 @@ body{
   </div>
 </div>
 
+
 <script>
-/* PARTICLE GENERATION */
-let pBox = document.getElementById("particles");
-for(let i=0;i<40;i++){
-  let p = document.createElement("div");
-  p.className="particle";
-  p.style.left=Math.random()*100+"%";
-  p.style.animationDuration=4 + Math.random()*6+"s";
-  pBox.appendChild(p);
+// ===== GLOBAL =====
+let editIndex = localStorage.getItem("editReviewerIndex");
+
+// ===== MODAL =====
+function openModal(text){
+  document.getElementById("modalText").innerText = text;
+  document.getElementById("modal").classList.add("active");
 }
 
-/* ADD OPTION TO SPECIFIC QUESTION */
+function closeModal(){
+  document.getElementById("modal").classList.remove("active");
+}
+
+// ===== ADD OPTION =====
 function addOption(btn){
-  let container = btn.previousElementSibling; // options-container
-  let count = container.querySelectorAll("input").length + 1;
+  let box = btn.previousElementSibling;
   let input = document.createElement("input");
-  input.placeholder = "Option " + count;
+  input.placeholder = "Option " + (box.children.length + 1);
   input.className = "o";
-  container.appendChild(input);
+  box.appendChild(input);
 }
 
-/* ADD ANOTHER QUESTION */
+// ===== ADD QUESTION =====
 function addQuestion(){
-  let container = document.getElementById("questionsContainer");
-  let card = document.createElement("div");
-  card.className = "question-card";
-  card.innerHTML = `
+  let q = document.createElement("div");
+  q.className = "question-card";
+  q.innerHTML = `
     <input placeholder="Question" class="q">
     <div class="options-container">
       <input placeholder="Option 1" class="o">
@@ -326,49 +328,93 @@ function addQuestion(){
     <button class="add-option-btn" onclick="addOption(this)">+ Add Option</button>
     <input placeholder="Correct Answer" class="a">
   `;
-  container.appendChild(card);
+  document.getElementById("questionsContainer").appendChild(q);
 }
 
-/* SUBMIT REVIEWER */
+// ===== LOAD DATA IF EDIT MODE =====
+if(editIndex !== null){
+  let reviewers = JSON.parse(localStorage.getItem("reviewers")) || [];
+  let r = reviewers[editIndex];
+
+  if(r){
+    document.getElementById("title").value = r.title;
+    let qc = document.getElementById("questionsContainer");
+    qc.innerHTML = "";
+
+    r.questions.forEach(q=>{
+      let div = document.createElement("div");
+      div.className = "question-card";
+      div.innerHTML = `
+        <input class="q" value="${q.question}">
+        <div class="options-container">
+          ${q.options.map(o=>`<input class="o" value="${o}">`).join("")}
+        </div>
+        <button class="add-option-btn" onclick="addOption(this)">+ Add Option</button>
+        <input class="a" value="${q.answer}">
+      `;
+      qc.appendChild(div);
+    });
+  }
+}
+
+// ===== SUBMIT REVIEWER =====
 function submitReviewer(){
   let reviewers = JSON.parse(localStorage.getItem("reviewers")) || [];
-  let title = document.getElementById("title").value;
-  let subject = localStorage.getItem("cr_subject");
-  let difficulty = localStorage.getItem("cr_level");
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  let current = localStorage.getItem("currentUser");
+  let admin = users.find(u => u.name === current);
 
-  let questionCards = document.querySelectorAll(".question-card");
+  let title = document.getElementById("title").value.trim();
+  if(!title){
+    alert("Title is required.");
+    return;
+  }
+
   let questions = [];
 
-  questionCards.forEach(card=>{
-    let q = card.querySelector(".q").value;
-    let options = Array.from(card.querySelectorAll(".o")).map(i=>i.value);
-    let a = card.querySelector(".a").value;
-    if(!q || !a || options.some(o=>!o)){
-      alert("Please fill all fields for every question!");
-      return;
+  document.querySelectorAll(".question-card").forEach(card=>{
+    let q = card.querySelector(".q").value.trim();
+    let a = card.querySelector(".a").value.trim();
+    let o = [...card.querySelectorAll(".o")]
+            .map(x=>x.value.trim())
+            .filter(x=>x !== "");
+
+    if(q && a && o.length >= 2){
+      questions.push({
+        question: q,
+        options: o,
+        answer: a
+      });
     }
-    questions.push({question:q, options:options, answer:a});
   });
 
-  reviewers.push({title, subject, difficulty, questions});
+  if(questions.length === 0){
+    alert("Please add at least one valid question.");
+    return;
+  }
+
+  let newReviewer = {
+    title: title,
+    subject: localStorage.getItem("cr_subject"),
+    difficulty: localStorage.getItem("cr_level"),
+    creator: admin ? admin.fullname : "Admin",
+    questions: questions
+  };
+
+  if(editIndex !== null){
+    reviewers[editIndex] = newReviewer;
+    localStorage.removeItem("editReviewerIndex");
+  }else{
+    reviewers.push(newReviewer);
+  }
+
   localStorage.setItem("reviewers", JSON.stringify(reviewers));
-  alert("Reviewer successfully created!");
-  location.href="main-site.html";
-}
-
-/* MODAL FUNCTIONS */
-let modal = document.getElementById("modal");
-let modalText = document.getElementById("modalText");
-
-function openModal(msg){
-  modalText.innerText = msg;
-  modal.classList.add('active');
-}
-
-function closeModal(){
-  modal.classList.remove('active');
+  alert("Reviewer saved successfully!");
+  location.href = "main-adminsite.html";
 }
 </script>
+
+
 
 </body>
 </html>

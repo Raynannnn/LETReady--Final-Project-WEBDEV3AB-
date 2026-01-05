@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviewer Details</title>
+
+<style>
+* { box-sizing: border-box; font-family: Arial, sans-serif; font-size: 0.85rem; }
+body { margin: 0; background: #1a3cff; color: white; min-height: 100vh; padding: 40px 20px; }
+
+.container { max-width: 900px; margin: 0 auto; }
+.back-btn { background:white; color:#1a3cff; border:2px solid #1a3cff; padding:10px 16px; border-radius:12px; font-weight:900; cursor:pointer; margin-bottom:20px; transition:0.2s; }
+.back-btn:hover { background:#1a3cff; color:white; }
+
+.reviewer-card { background:white; color:#1a3cff; border-radius:20px; padding:20px; }
+.rev-title { font-weight:900; font-size:1.4rem; margin-bottom:10px; }
+.rev-desc { font-weight:700; margin-bottom:10px; }
+.rev-video { width:100%; height:400px; background:black; border-radius:12px; margin-bottom:15px; display:flex; align-items:center; justify-content:center; color:white; font-weight:900; }
+.rev-creator { font-weight:700; margin-bottom:15px; }
+.assess-btn { background:white; color:#1a3cff; border:2px solid #1a3cff; padding:10px 16px; border-radius:12px; font-weight:900; cursor:pointer; transition:0.2s; }
+.assess-btn:hover { background:#1a3cff; color:white; }
+</style>
+</head>
+
+<body>
+<div class="container">
+  <button class="back-btn" onclick="goBack()">← Back</button>
+
+  <div class="reviewer-card">
+    <div class="rev-title" id="revTitle">Reviewer Title</div>
+    <div class="rev-desc" id="revDesc">Subject | Difficulty</div>
+    <div class="rev-video" id="revVideo">Video Placeholder</div>
+    <div class="rev-creator" id="revCreator">Created by: Creator Name</div>
+    <button class="assess-btn" id="startAssessBtn">START ASSESSMENT</button>
+  </div>
+</div>
+
+<script>
+// Go back to dashboard
+function goBack(){
+  window.location.href = "main-usersite.html"; // bumalik sa dashboard
+}
+
+// Load selected reviewer from localStorage
+let activeIndex = localStorage.getItem("activeReviewer");
+let reviewers = JSON.parse(localStorage.getItem("reviewers")) || [];
+
+if(activeIndex !== null && reviewers[activeIndex]){
+  let r = reviewers[activeIndex];
+  document.getElementById("revTitle").innerText = r.title;
+  document.getElementById("revDesc").innerText = r.subject + " | " + r.difficulty;
+  
+  // Placeholder for video embed, puwede mo palitan ng iframe o video URL
+  document.getElementById("revVideo").innerHTML = r.videoURL ? `<iframe width="100%" height="100%" src="${r.videoURL}" frameborder="0" allowfullscreen></iframe>` : "Video Placeholder";
+
+  document.getElementById("revCreator").innerText = "Created by: " + r.creator;
+}
+
+// Start assessment button
+document.getElementById("startAssessBtn").onclick = () => {
+  alert("Assessment started for " + reviewers[activeIndex].title);
+  // dito mo puwede redirect sa actual assessment page
+  // window.location.href = "assessment.html";
+};
+</script>
+</body>
+</html>

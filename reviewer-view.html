@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Reviewer</title>
+
+<style>
+*{box-sizing:border-box;font-family:Arial;}
+body{
+  margin:0;
+  min-height:100vh;
+  background:#1a3cff;
+  padding:30px 20px;
+  color:white;
+}
+
+/* PARTICLES */
+#particles{position:fixed;inset:0;z-index:-1;}
+.particle{
+  position:absolute;width:6px;height:6px;
+  background:white;opacity:0.3;border-radius:50%;
+  animation:float 8s linear infinite;
+}
+@keyframes float{
+  from{transform:translateY(100vh);}
+  to{transform:translateY(-10vh);}
+}
+
+/* HEADER */
+.header{
+  max-width:900px;
+  margin:0 auto 15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.header h2{margin:0;font-weight:900;}
+.header span{font-size:14px;opacity:0.9;}
+
+/* CARD */
+.card{
+  max-width:900px;
+  margin:auto;
+  background:white;
+  color:#1a3cff;
+  border-radius:25px;
+  padding:30px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.2);
+}
+
+/* PROGRESS */
+.progress-bar{
+  width:100%;
+  height:12px;
+  background:#e6e9ff;
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:20px;
+}
+.progress{
+  height:100%;
+  width:0%;
+  background:#1a3cff;
+  transition:0.4s;
+}
+
+/* QUESTION */
+.question{
+  font-size:18px;
+  font-weight:700;
+  margin-bottom:15px;
+}
+
+/* OPTIONS */
+.option{
+  background:#f0f4ff;
+  border:2px solid #1a3cff;
+  border-radius:15px;
+  padding:12px;
+  margin-bottom:10px;
+  cursor:pointer;
+  transition:0.2s;
+}
+.option:hover{background:#e3e8ff;}
+.option.locked{pointer-events:none;opacity:0.7;}
+
+.correct{background:#d4f5dc!important;border-color:#2ecc71;}
+.wrong{background:#ffd6d6!important;border-color:#e74c3c;}
+
+/* FOOTER */
+.footer{
+  display:flex;
+  justify-content:space-between;
+  margin-top:25px;
+}
+.footer button{
+  padding:10px 20px;
+  border:none;
+  border-radius:15px;
+  background:#1a3cff;
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+}
+.footer button:hover{background:#0f2de0;}
+
+.score{
+  font-weight:700;
+}
+</style>
+</head>
+
+<body>
+
+<div id="particles"></div>
+
+<div class="header">
+  <h2 id="title"></h2>
+  <span id="creator"></span>
+</div>
+
+<div class="card">
+  <div class="progress-bar">
+    <div class="progress" id="progress"></div>
+  </div>
+
+  <div class="score">Score: <span id="score">0</span></div>
+
+  <div id="questionBox"></div>
+
+  <div class="footer">
+    <button onclick="goBack()">← Back</button>
+    <button onclick="nextQuestion()" id="nextBtn" style="display:none">Next →</button>
+  </div>
+</div>
+
+<script>
+// ================= PARTICLES =================
+for(let i=0;i<35;i++){
+  let p=document.createElement("div");
+  p.className="particle";
+  p.style.left=Math.random()*100+"%";
+  p.style.animationDuration=4+Math.random()*5+"s";
+  particles.appendChild(p);
+}
+
+// ================= LOAD REVIEWER =================
+const reviewerIndex = Number(localStorage.getItem("activeReviewer"));
+const reviewer = JSON.parse(localStorage.getItem("reviewers"))[reviewerIndex];
+
+title.innerText = reviewer.title;
+creator.innerText = "Created by: " + reviewer.creator;
+
+let current = 0;
+let score = 0;
+let locked = false;
+
+// ================= RENDER =================
+function renderQuestion(){
+  locked = false;
+  nextBtn.style.display = "none";
+
+  let q = reviewer.questions[current];
+  questionBox.innerHTML = `
+    <div class="question">${current+1}. ${q.question}</div>
+  `;
+
+  q.options.forEach(opt=>{
+    let div = document.createElement("div");
+    div.className = "option";
+    div.innerText = opt;
+    div.onclick = ()=>checkAnswer(div,opt,q.answer);
+    questionBox.appendChild(div);
+  });
+
+  progress.style.width = ((current)/reviewer.questions.length)*100 + "%";
+}
+
+// ================= CHECK ANSWER =================
+function checkAnswer(el,selected,answer){
+  if(locked) return;
+  locked = true;
+
+  document.querySelectorAll(".option").forEach(o=>{
+    o.classList.add("locked");
+    if(o.innerText === answer) o.classList.add("correct");
+  });
+
+  if(selected === answer){
+    el.classList.add("correct");
+    score++;
+  }else{
+    el.classList.add("wrong");
+  }
+
+  scoreEl.innerText = score;
+  nextBtn.style.display = "inline-block";
+}
+
+const scoreEl = document.getElementById("score");
+
+// ================= NEXT =================
+function nextQuestion(){
+  current++;
+  if(current < reviewer.questions.length){
+    renderQuestion();
+  }else{
+    saveScore();
+    questionBox.innerHTML = `
+      <h2>Finished!</h2>
+      <p>Your Score: ${score} / ${reviewer.questions.length}</p>
+    `;
+    progress.style.width = "100%";
+    nextBtn.style.display="none";
+  }
+}
+
+// ================= SAVE SCORE =================
+function saveScore(){
+  let scores = JSON.parse(localStorage.getItem("reviewerScores")) || [];
+  scores.push({
+    reviewerIndex: reviewerIndex,
+    score: score,
+    total: reviewer.questions.length,
+    date: new Date().toLocaleDateString()
+  });
+  localStorage.setItem("reviewerScores", JSON.stringify(scores));
+  localStorage.removeItem("originSite");
+
+}
+
+// ================= BACK =================
+function goBack(){
+  let origin = localStorage.getItem("originSite");
+
+  if(origin === "admin"){
+    window.location.href = "main-adminsite/main-adminsite.html";
+  } else if(origin === "user"){
+    window.location.href = "index.html"; 
+  } else {
+    window.history.back(); // fallback
+  }
+}
+
+// INIT
+renderQuestion();
+
+// kapag sa adminsite inopen ang reviewer
+function startReviewer(index){
+  localStorage.setItem("activeReviewer", index);
+  localStorage.setItem("originSite", "admin");
+  window.location.href="reviewer-view.html";
+}
+
+function openReviewerPage(){
+  localStorage.setItem("originSite", "user");
+  window.location.href="reviewer-view.html";
+}
+
+</script>
+
+</body>
+</html>

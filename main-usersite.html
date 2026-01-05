@@ -7,177 +7,89 @@
 
 <style>
 * { box-sizing: border-box; font-family: Arial, sans-serif; font-size: 0.8rem; }
-body {
-  margin: 0;
-  background: #1a3cff;
-  min-height: 100vh;
-  color: white;
-  overflow-x: hidden;
-  padding-top: 40px;
-}
+body { margin: 0; background: #1a3cff; min-height: 100vh; color: white; overflow-x: hidden; padding-top: 40px; }
 
 #particles { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
-.particle {
-  position:absolute;
-  width:4px;
-  height:4px;
-  background:white;
-  opacity:0.4;
-  border-radius:50%;
-  animation: float linear infinite;
-}
+.particle { position:absolute; width:4px; height:4px; background:white; opacity:0.4; border-radius:50%; animation: float linear infinite; }
 @keyframes float { from { transform: translateY(100vh); } to { transform: translateY(-10vh); } }
 
-.container {
-  display: flex;
-  gap: 18px;
-  padding: 0 35px;
-  max-width: 1200px;
-  margin: 0 auto;
-  align-items: flex-start;
-}
-
+.container { display: flex; gap: 18px; padding: 0 35px; max-width: 1200px; margin: 0 auto; align-items: flex-start; }
 .left { width: 180px; flex-shrink: 0; padding-top: 60px; }
-.menu-trigger {
-  font-weight: 900;
-  font-size: 1rem;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-  cursor: pointer;
-  padding: 8px 0;
-}
-
-.menu-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
+.menu-trigger { font-weight: 900; font-size: 1rem; margin-bottom: 10px; text-transform: uppercase; cursor: pointer; padding: 8px 0; }
+.menu-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; display: flex; flex-direction: column; gap: 12px; }
 .menu-content.open { max-height: 250px; }
-
-.menu-link {
-  font-weight: 800;
-  font-size: 0.9rem;
-  cursor: pointer;
-  color: white;
-  text-decoration: none;
-  text-transform: uppercase;
-}
+.menu-link { font-weight: 800; font-size: 0.9rem; cursor: pointer; color: white; text-decoration: none; text-transform: uppercase; }
 .menu-link:hover { opacity: 0.7; }
 
-.center {
-  flex-grow: 1;
-  border: 3px solid white;
-  border-radius: 35px;
-  padding: 25px;
-  min-height: 650px;
-  background: rgba(255,255,255,0.04);
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
+.center { flex-grow: 1; border: 3px solid white; border-radius: 35px; padding: 25px; min-height: 650px; background: rgba(255,255,255,0.04); display: flex; flex-direction: column; position: relative; }
 .dropdown-row { display: flex; gap: 18px; margin-bottom: 30px; }
-
-.dropdown-box {
-  flex: 1;
-  background: white;
-  border-radius: 12px;
-  color: black;
-  border: 2px solid black;
-  position: relative;
-  min-height: 90px;
-}
-
-.dropdown-header {
-  background: white;
-  border: 2px solid black;
-  border-radius: 15px;
-  padding: 8px;
-  text-align: center;
-  font-size: 0.85rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  cursor: pointer;
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 85%;
-}
-
-.dropdown-list {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-  padding-right: 15px;
-  margin-top: 25px;
-  text-align: right;
-  font-weight: 800;
-  color: #1a3cff;
-}
+.dropdown-box { flex: 1; background: white; border-radius: 12px; color: black; border: 2px solid black; position: relative; min-height: 90px; }
+.dropdown-header { background: white; border: 2px solid black; border-radius: 15px; padding: 8px; text-align: center; font-size: 0.85rem; font-weight: 900; text-transform: uppercase; cursor: pointer; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 85%; }
+.dropdown-list { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding-right: 15px; margin-top: 25px; text-align: right; font-weight: 800; color: #1a3cff; }
 .dropdown-list.open { max-height: 180px; padding-bottom: 10px; }
-
 .dropdown-item { cursor: pointer; margin: 5px 0; }
 .dropdown-item:hover { color: black; }
 
-#dashboardGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 25px;
-}
+#dashboardGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+.card { background:#1a3cff; border-radius:20px; height:180px; display:flex; flex-direction:column; color:white; cursor:pointer; border:2px solid black; transition: transform 0.15s ease; }
+.card:hover { transform: translateY(-4px); }
+.card-top { flex:3; position:relative; border-bottom:2px solid black; }
+.shield-icon { position:absolute; top:12px; right:12px; font-size:22px; }
+.card-bottom { flex:1; display:flex; align-items:center; padding-left:15px; }
+.stars { color:#f2b01e; font-size:1.2rem; letter-spacing:3px; }
 
-.card {
-  background:#1a3cff;
-  border-radius:20px;
-  height:180px;
-  display:flex;
-  flex-direction:column;
-  color:white;
-  cursor:pointer;
-  border:2px solid black;
-  transition:transform 0.15s ease;
-}
-.card:hover{ transform: translateY(-4px); }
-
-.card-top{ flex:3; position:relative; border-bottom:2px solid black; }
-.shield-icon{ position:absolute; top:12px; right:12px; font-size:22px; }
-.card-bottom{ flex:1; display:flex; align-items:center; padding-left:15px; }
-.stars{ color:#f2b01e; font-size:1.2rem; letter-spacing:3px; }
-
-.right{ width:230px; display:flex; flex-direction:column; align-items:center; gap:12px; }
-.profile-img{
-  width:90px; height:90px;
-  border-radius:50%;
-  border:3px solid white;
-  background-color:#1a3cff;
-  background-size:cover;
-  background-position:center;
-  cursor:pointer;
-}
-.details-box{
-  width:100%; height:150px;
-  background:white;
-  border-radius:18px;
-  color:#1a3cff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:900;
-  border:2px solid black;
-  font-size:0.75rem;
-}
-.assess-btn{
-  width:100%; padding:6px;
-  background:white; color:#1a3cff;
-  border:2px solid black; border-radius:12px;
-  font-weight:900; cursor:pointer;
-  font-size:0.7rem;
-  text-transform:uppercase;
-}
+.right { width:230px; display:flex; flex-direction:column; align-items:center; gap:12px; }
+.profile-img { width:90px; height:90px; border-radius:50%; border:3px solid white; background-color:#1a3cff; background-size:cover; background-position:center; cursor:pointer; }
+.details-box { width:100%; height:150px; background:white; border-radius:18px; color:#1a3cff; display:flex; align-items:center; justify-content:center; font-weight:900; border:2px solid black; font-size:0.75rem; }
+.assess-btn { width:100%; padding:6px; background:white; color:#1a3cff; border:2px solid black; border-radius:12px; font-weight:900; cursor:pointer; font-size:0.7rem; text-transform:uppercase; }
 input[type=file]{ display:none; }
+
+.reviewer-card { background: white; color: #1a3cff; border-radius:20px; padding:15px; margin-bottom:15px; cursor:pointer; border:2px solid #1a3cff; transition:0.2s; }
+.reviewer-card:hover { background:#e0f0ff; }
+.rev-title { font-weight:900; font-size:1.1rem; margin-bottom:10px; }
+.rev-desc-box, .rev-credits-box { background:#f0f4ff; border-radius:12px; padding:10px; margin-bottom:8px; color:#1a3cff; font-weight:700; }
+.rev-video-box { background:black; border-radius:12px; height:180px; margin-bottom:10px; display:flex; align-items:center; justify-content:center; color:white; font-weight:900; }
+
+/* FIXED BACK BUTTON LOWER RIGHT */
+#fixedBackBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: white;
+  color: #1a3cff;
+  border: 2px solid #1a3cff;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 900;
+  cursor: pointer;
+  z-index: 9999;
+  transition: 0.2s;
+}
+#fixedBackBtn:hover { background: #1a3cff; color: white; }
+
+.back-btn {
+  width: 100%;
+  padding:8px;
+  background:white;
+  color:#1a3cff;
+  border:2px solid black;
+  border-radius:14px;
+  font-weight:900;
+  cursor:pointer;
+  font-size:0.75rem;
+  text-transform:uppercase;
+  transition: transform 0.15s ease, background 0.2s ease;
+  margin-top:10px;
+}
+.back-btn:hover {
+  background:#0d2ecc;
+  color:white;
+  transform: translateY(-3px);
+}
+.back-btn:active {
+  transform: scale(0.96);
+}
+
 </style>
 </head>
 
@@ -187,27 +99,28 @@ input[type=file]{ display:none; }
 <div class="container">
   <div class="left">
     <div class="menu-trigger" onclick="toggleSimple('slidingMenu')">MENU ▾</div>
-    <div class="menu-content open" id="slidingMenu">
+    <div class="menu-content" id="slidingMenu">
       <div class="menu-link" onclick="switchView('dashboard')">DASHBOARD</div>
-      <div class="menu-link" onclick="switchView('reviewer')">REVIEWER</div>
+      <div class="menu-link" onclick="openReviewerPage()">REVIEWER</div>
+<div class="menu-link" onclick="openAssessPage()">ASSESSMENTS</div>
       <div class="menu-link">BOOKMARKS</div>
-      <div class="menu-link">ASSESSMENTS</div>
+    
     </div>
   </div>
 
   <div class="center">
+    <!-- DROPDOWN -->
     <div class="dropdown-row">
       <div class="dropdown-box">
-        <div class="dropdown-header" onclick="toggleDropdown('subjectList')">SUBJECT CATEGORIES</div>
+        <div class="dropdown-header" onclick="toggleDropdown('subjectList')">SUBJECT</div>
         <div class="dropdown-list" id="subjectList">
           <div class="dropdown-item" onclick="selectItem(this)">ICT</div>
           <div class="dropdown-item" onclick="selectItem(this)">ProfEd</div>
           <div class="dropdown-item" onclick="selectItem(this)">GenEd</div>
         </div>
       </div>
-
       <div class="dropdown-box">
-        <div class="dropdown-header" onclick="toggleDropdown('diffList')">DIFFICULTY LEVEL</div>
+        <div class="dropdown-header" onclick="toggleDropdown('diffList')">DIFFICULTY</div>
         <div class="dropdown-list" id="diffList">
           <div class="dropdown-item" onclick="selectItem(this)">EASY</div>
           <div class="dropdown-item" onclick="selectItem(this)">MEDIUM</div>
@@ -216,24 +129,9 @@ input[type=file]{ display:none; }
       </div>
     </div>
 
-    <div id="dashboardGrid">
-      <div class="card" onclick="switchView('reviewer')">
-        <div class="card-top"><span class="shield-icon">🛡️</span></div>
-        <div class="card-bottom"><span class="stars">☆☆☆</span></div>
-      </div>
-      <div class="card" onclick="switchView('reviewer')">
-        <div class="card-top"><span class="shield-icon">🛡️</span></div>
-        <div class="card-bottom"><span class="stars">☆☆☆</span></div>
-      </div>
-    </div>
-
-    <div id="reviewerView">
-      <div class="rev-title">TITLE</div>
-      <div class="rev-desc-box">Description</div>
-      <div class="rev-video-box">VIDEO</div>
-      <div class="rev-credits-box">CREDITS</div>
-      <button class="assess-btn" onclick="switchView('dashboard')">BACK</button>
-    </div>
+    <!-- DASHBOARD & REVIEWER LIST -->
+    <div id="dashboardGrid"></div>
+    <div id="reviewerList" style="display:none; flex-direction:column;"></div>
   </div>
 
   <div class="right">
@@ -241,14 +139,18 @@ input[type=file]{ display:none; }
       <div class="profile-img" id="profileImg"></div>
       <input type="file" accept="image/*" onchange="uploadPic(event)">
     </label>
-    <div>NAME</div>
+    <div id="userName">NAME</div>
     <div class="details-box">PROFILE DETAILS</div>
     <button class="assess-btn">FIRST ASSESS</button>
+    <button class="btn back-btn" onclick="goBack()">Back to Main Page</button>
   </div>
 </div>
 
+<!-- FIXED BACK BUTTON -->
+ 
+
 <script>
-// Optimized particles
+// PARTICLES
 for(let i=0;i<18;i++){
   let p=document.createElement("div");
   p.className="particle";
@@ -257,35 +159,132 @@ for(let i=0;i<18;i++){
   document.getElementById("particles").appendChild(p);
 }
 
-function toggleSimple(id){
-  document.getElementById(id).classList.toggle("open");
-}
+// MENU + DROPDOWN
+function toggleSimple(id){ document.getElementById(id).classList.toggle("open"); }
 
-// Proper one-at-a-time dropdown
 function toggleDropdown(id){
-  document.getElementById("subjectList").classList.remove("open");
-  document.getElementById("diffList").classList.remove("open");
+  const lists = ['subjectList','diffList'];
+  lists.forEach(l => { if(l!==id) document.getElementById(l).classList.remove("open"); });
   document.getElementById(id).classList.toggle("open");
-}
-
-function switchView(v){
-  const dash=document.getElementById("dashboardGrid");
-  const rev=document.getElementById("reviewerView");
-  if(v==='reviewer'){ dash.style.display='none'; rev.style.display='flex'; }
-  else{ dash.style.display='grid'; rev.style.display='none'; }
 }
 
 function selectItem(el){
-  let sib=el.parentElement.children;
-  for(let i=0;i<sib.length;i++){ sib[i].style.color="#1a3cff"; }
+  const siblings = el.parentElement.children;
+  for(let i=0;i<siblings.length;i++){ siblings[i].style.color="#1a3cff"; }
   el.style.color="white";
 }
 
+// PROFILE PIC (from main-adminsite.html)
 function uploadPic(e){
   if(e.target.files[0]){
     document.getElementById("profileImg").style.backgroundImage=`url(${URL.createObjectURL(e.target.files[0])})`;
   }
 }
+
+// LOAD USER (sync with main-adminsite.html)
+let users = JSON.parse(localStorage.getItem("users")) || [];
+let current = localStorage.getItem("currentUser");
+let user = users.find(u => u.name===current);
+if(user) document.getElementById("userName").innerText = user.fullname || user.name;
+
+
+// SWITCH VIEW
+function switchView(v){
+  const dash = document.getElementById("dashboardGrid");
+  const reviewer = document.getElementById("reviewerList");
+
+  if(v==='dashboard'){
+    dash.style.display='grid';
+    reviewer.style.display='none';
+  } else if(v==='reviewerList'){
+    dash.style.display='none';
+    reviewer.style.display='flex';
+  }
+}
+// kapag sa usersite inopen ang reviewer
+
+
+
+// START REVIEWER
+function startReviewer(index){
+  localStorage.setItem("activeReviewer", index);
+  window.location.href="reviewer.html";
+}
+
+// FIXED BACK BUTTON - always go back to index.html
+function goBack() {
+  window.location.href = "index.html";
+}
+
+// Direktang open reviewer page
+function openReviewerPage() {
+    window.location.href = "reviewer.html";
+}
+
+// Direktang open assessment page
+function openAssessPage() {
+    window.location.href = "assessment.html";
+}
+
+let savedScore = localStorage.getItem("latestScore");
+
+/* LOAD REVIEWERS FROM LOCAL STORAGE */
+let reviewers = JSON.parse(localStorage.getItem("reviewers")) || [];
+
+const dashboardGrid = document.getElementById("dashboardGrid");
+const reviewerList = document.getElementById("reviewerList");
+
+// CLEAR FIRST
+dashboardGrid.innerHTML = "";
+reviewerList.innerHTML = "";
+
+// LOOP REVIEWERS
+reviewers.forEach((r, i) => {
+
+  /* DASHBOARD CARD (grid style) */
+  let card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    <div class="card-top">
+      <div class="shield-icon">📘</div>
+    </div>
+    <div class="card-bottom">
+      <div>
+        <div style="font-weight:900">${r.title}</div>
+        <div style="font-size:0.7rem">${r.subject} | ${r.difficulty}</div>
+        <div class="stars">★ ★ ★</div>
+      </div>
+    </div>
+  `;
+
+  card.onclick = () => {
+    localStorage.setItem("activeReviewer", i);
+    window.location.href = "reviewer-view.html";
+  };
+
+  dashboardGrid.appendChild(card);
+
+  /* REVIEWER LIST BOX (vertical view) */
+  let listCard = document.createElement("div");
+  listCard.className = "reviewer-card";
+  listCard.innerHTML = `
+    <div class="rev-title">${r.title}</div>
+    <div class="rev-desc-box">
+      Subject: ${r.subject}<br>
+      Difficulty: ${r.difficulty}
+    </div>
+    <div class="rev-credits-box">
+      Questions: ${r.questions ? r.questions.length : 0}
+    </div>
+  `;
+
+  listCard.onclick = () => {
+    localStorage.setItem("activeReviewer", i);
+    window.location.href = "reviewer-view.html";
+  };
+
+  reviewerList.appendChild(listCard);
+});
 </script>
 </body>
 </html>

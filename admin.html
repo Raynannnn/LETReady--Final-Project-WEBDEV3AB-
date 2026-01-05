@@ -1,33 +1,134 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Admin Panel</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body style="flex-direction:column; padding:40px;">
+<meta charset="UTF-8">
+<title>Admin Approval</title>
 
-<h2>ADMIN DASHBOARD</h2>
-<div id="list"></div>
+<style>
+*{ box-sizing:border-box; font-family:Arial,sans-serif; }
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:#1a3cff;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:40px 20px;
+  color:white;
+}
+
+/* CARD */
+.card{
+  width:100%;
+  max-width:600px;
+  background:white;
+  border-radius:20px;
+  padding:30px;
+  color:#1a3cff;
+  box-shadow:0 15px 40px rgba(0,0,0,0.25);
+}
+
+.card h2{
+  text-align:center;
+  margin-bottom:25px;
+  font-weight:900;
+}
+
+/* USER ITEM */
+.user{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 18px;
+  border-radius:15px;
+  background:#f0f4ff;
+  margin-bottom:12px;
+  box-shadow:0 5px 15px rgba(0,0,255,0.15);
+}
+
+.user span{
+  font-weight:700;
+}
+
+.user button{
+  padding:8px 14px;
+  border:none;
+  border-radius:12px;
+  background:#1a3cff;
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.user button:hover{
+  background:#0f2de0;
+  transform:scale(1.05);
+}
+
+.empty{
+  text-align:center;
+  opacity:0.7;
+  margin-top:20px;
+}
+
+/* BACK */
+.back-btn{
+  margin-top:20px;
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:15px;
+  background:#ff5959;
+  color:white;
+  font-weight:800;
+  cursor:pointer;
+}
+.back-btn:hover{ background:#e60000; }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>ADMIN APPROVAL</h2>
+  <div id="list"></div>
+
+  <button class="back-btn" onclick="historyBack()">← Back</button>
+</div>
 
 <script src="database.js"></script>
 <script>
-let users=getUsers();
-let box=document.getElementById("list");
+let users = getUsers();
+let box = document.getElementById("list");
+let found = false;
 
 users.forEach((u,i)=>{
-  if(u.role==="admin" && u.status==="pending"){
-    box.innerHTML+=`
-      <p>${u.name}
-      <button onclick="approve(${i})">Approve</button>
-      </p>`;
+  if(u.role === "admin" && u.status === "pending"){
+    found = true;
+    box.innerHTML += `
+      <div class="user">
+        <span>${u.name}</span>
+        <button onclick="approve(${i})">Approve</button>
+      </div>
+    `;
   }
 });
 
+if(!found){
+  box.innerHTML = `<div class="empty">No pending admin approvals</div>`;
+}
+
 function approve(i){
-  users[i].status="approved";
+  users[i].status = "approved";
   saveUsers(users);
-  alert("Admin approved");
+  alert("Admin approved successfully");
   location.reload();
+}
+
+function historyBack() {
+    window.location.href = "main-adminsite/main-adminsite.html";
 }
 </script>
 
